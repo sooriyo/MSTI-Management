@@ -39,6 +39,11 @@ def get_user_by_id(id):
 def login_user():
     return obj.login_user_model(request.form)
 
+    
+    #  auth_data = request.authorization
+    # return obj.login_user_model(auth_data['username'], auth_data['password'])
+    # return obj.login_user_model(request.form)
+
 
 
 

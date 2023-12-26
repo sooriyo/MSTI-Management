@@ -73,19 +73,31 @@ class user_model():
     def login_user_model(self, data):
         self.cur.execute(f"SELECT * FROM tbl_users WHERE userName='{data['userName']}' AND password='{data['password']}'")
         result = self.cur.fetchall()
+        if len(result)==1:
+            exptime = datetime.now() + timedelta(minutes=15)
+            exp_epoc_time = exptime.timestamp()
+            data = {
+                "payload":result[0],
+                "exp":int(exp_epoc_time)
+            }
+            print(int(exp_epoc_time))
+            jwt_token = jwt.encode(data, "MSTI@Auth", algorithm="HS256")
+            return make_response({"token":jwt_token}, 200)
+        else:
+            return make_response({"message":"NO SUCH USER"}, 204)
         
         # return result
 
-        if len(result)>0:
-            payload = {
-                'id': result[0]['id'],
-                'userName': result[0]['userName'],
-                'userType': result[0]['userType'],
-                'exp': datetime.utcnow() + timedelta(minutes=60),
-                'iat': datetime.utcnow()
-            }
-            token = jwt.encode(payload, 'mstiAuthCon', algorithm='HS256')
-            return make_response({"token":token,"Date Time":datetime.utcnow(),"message":"LOGIN_SUCCESSFULLY",},200)
-        else:
-            return make_response({"message":"INVALID_CREDENTIALS"},404)
+        # if len(result)>0:
+        #     payload = {
+        #         'id': result[0]['id'],
+        #         'userName': result[0]['userName'],
+        #         'userType': result[0]['userType'],
+        #         'exp': datetime.utcnow() + timedelta(minutes=60),
+        #         'iat': datetime.utcnow()
+        #     }
+        #     token = jwt.encode(payload, 'mstiAuthCon', algorithm='HS256')
+        #     return make_response({"token":token,"Date Time":datetime.utcnow(),"message":"LOGIN_SUCCESSFULLY",},200)
+        # else:
+        #     return make_response({"message":"INVALID_CREDENTIALS"},404)
         

@@ -23,7 +23,7 @@ class student_model():
         return make_response({"data": result}, 200)
     
     def get_student_by_std_id(self, studentId):
-        self.cur.execute(f"SELECT * FROM tbl_student WHERE tudentId = {studentId}")
+        self.cur.execute(f"SELECT * FROM tbl_student WHERE studentId = '{studentId}'")
         result = self.cur.fetchall()
         return make_response({"data": result}, 200)
     

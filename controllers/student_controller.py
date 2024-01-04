@@ -18,7 +18,7 @@ def get_student():
 def get_student_by_id(id):
     return obj.get_student_by_id(id)
 
-@app.route("/std/get/<int:studentId>", methods=['GET'])
+@app.route("/std/get/std/<string:studentId>", methods=['GET'])
 def get_student_by_std_id(studentId):
     return obj.get_student_by_std_id(studentId)
 
